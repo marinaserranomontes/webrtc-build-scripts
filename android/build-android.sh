@@ -99,24 +99,26 @@ for ARCH in $ARCHS; do
     fi
 	gclient runhooks --force
 
-  rm -rf talk/*
 	ninja -v -C out/$BUILD_MODE all
 	
 	AR=`NDK_ROOT=$BASE_PATH/$BRANCH/third_party/android_tools/ndk ${BASE_PATH}/ndk-which ar $ABI`
 	
-  if [ -z obj/talk ]; then
-     rm -rf obj/talk/*
-  fi
-
   cd $LIBS_DEST
 	LIBS=`find $BASE_PATH/$BRANCH/out/$BUILD_MODE -name '*.a'`
 	for LIB in $LIBS; do
-	    LIB_TYPE=$(get_file_type "$LIB")
-	    if is_file_type_thin_archive "$LIB_TYPE"; then
-		copy_thin $AR $LIB `pwd`
-	    else
-		$AR -x $LIB
-	    fi
+      if [ LIB != "libjingle.a" ]; then
+      (  
+         LIB_TYPE=$(get_file_type "$LIB")
+	       if is_file_type_thin_archive "$LIB_TYPE"; then
+		      copy_thin $AR $LIB `pwd`
+	       else
+		      $AR -x $LIB
+	       fi
+      )
+      else
+      (
+        echo "Excluding libjingle.a"
+      )fi
 	done
 	for a in `ls *.o | grep gtest` ; do 
 	    rm $a

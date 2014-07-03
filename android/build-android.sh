@@ -52,8 +52,6 @@ echo "target_os = ['android', 'unix']" >> .gclient
 gclient revert
 gclient sync --nohooks $SYNC_REVISION
 
-rm -rf talk/*
-
 # hop up one level and apply patches before continuing
 cd $BASE_PATH
 PATCHES=`find $BASE_PATH/patches -name *.diff`
@@ -100,10 +98,16 @@ for ARCH in $ARCHS; do
         export GYP_DEFINES="$GYP_DEFINES fastbuild=1"
     fi
 	gclient runhooks --force
+
+  rm -rf talk/*
 	ninja -v -C out/$BUILD_MODE all
 	
 	AR=`NDK_ROOT=$BASE_PATH/$BRANCH/third_party/android_tools/ndk ${BASE_PATH}/ndk-which ar $ABI`
-	cd $LIBS_DEST
+	
+  if [ -z obj/talk ]; then
+     rm -rf obj/talk/*
+     
+  cd $LIBS_DEST
 	LIBS=`find $BASE_PATH/$BRANCH/out/$BUILD_MODE -name '*.a'`
 	for LIB in $LIBS; do
 	    LIB_TYPE=$(get_file_type "$LIB")

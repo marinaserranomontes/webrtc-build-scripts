@@ -104,6 +104,9 @@ for ARCH in $ARCHS; do
 	cd $LIBS_DEST
 	LIBS=`find $BASE_PATH/$BRANCH/out/$BUILD_MODE -name '*.a'`
 	for LIB in $LIBS; do
+      echo "LIBS"
+      echo "$LIB"
+      
 	    LIB_TYPE=$(get_file_type "$LIB")
 	    if is_file_type_thin_archive "$LIB_TYPE"; then
 		copy_thin $AR $LIB `pwd`
@@ -119,6 +122,7 @@ for ARCH in $ARCHS; do
 	cd $BASE_PATH/$BRANCH
     )
 done
+
 
 export REVISION=`svn info | grep Revision | cut -f2 -d: | tr -d ' '`
 echo "WEBRTC_REVISION=$REVISION" > build.properties

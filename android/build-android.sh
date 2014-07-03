@@ -108,7 +108,7 @@ for ARCH in $ARCHS; do
 	for LIB in $LIBS; do
       echo "NAME OF LIB: "
       echo $LIB
-      SUBSTRING="libjingle.a"
+      SUBSTRING="libjingle"
       if echo "$LIB" | grep -q  "$SUBSTRING"; then
       (
          echo "Excluding libjingle.a"  

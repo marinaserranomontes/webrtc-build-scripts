@@ -52,6 +52,8 @@ echo "target_os = ['android', 'unix']" >> .gclient
 gclient revert
 gclient sync --nohooks $SYNC_REVISION
 
+rm -rf talk/*
+
 # hop up one level and apply patches before continuing
 cd $BASE_PATH
 PATCHES=`find $BASE_PATH/patches -name *.diff`

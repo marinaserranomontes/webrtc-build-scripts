@@ -85,13 +85,18 @@ for ARCH in $ARCHS; do
 
 	source build/android/envsetup.sh --target-arch=$ARCH
 
-	export GYP_DEFINES="build_with_libjingle=1 OS=android \
+	export GYP_DEFINES="build_with_libjingle=0 OS=android \
                             build_with_chromium=0 \
                             enable_tracing=1 \
                             include_tests=0 \
                             enable_android_opensl=0 \
                 			      target_arch=$ARCH \
                             $GYP_DEFINES"
+    if [ "1" == "$DEBUG" ]; then
+        export GYP_DEFINES="$GYP_DEFINES fastbuild=0"
+    else
+        export GYP_DEFINES="$GYP_DEFINES fastbuild=1"
+    fi
 	gclient runhooks --force
 	ninja -v -C out/$BUILD_MODE all
 	

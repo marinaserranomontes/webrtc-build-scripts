@@ -108,18 +108,19 @@ for ARCH in $ARCHS; do
 	for LIB in $LIBS; do
       echo "NAME OF LIB: "
       echo $LIB
-      if [ "$LIB" != "libjingle.a" ]; then
+      if [ "$LIB" =~ "libjingle.a" ]; then
       (  
-         LIB_TYPE=$(get_file_type "$LIB")
-	       if is_file_type_thin_archive "$LIB_TYPE"; then
-		      copy_thin $AR $LIB `pwd`
-	       else
-		      $AR -x $LIB
-	       fi
+         echo "Excluding libjingle.a"
+         
       )
       else
       (
-        echo "Excluding libjingle.a"
+        LIB_TYPE=$(get_file_type "$LIB")
+         if is_file_type_thin_archive "$LIB_TYPE"; then
+          copy_thin $AR $LIB `pwd`
+         else
+          $AR -x $LIB
+         fi
       )fi
 	done
 	for a in `ls *.o | grep gtest` ; do 

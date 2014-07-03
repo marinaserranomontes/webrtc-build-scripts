@@ -52,6 +52,8 @@ echo "target_os = ['android', 'unix']" >> .gclient
 gclient revert
 gclient sync --nohooks $SYNC_REVISION
 
+rm -rf talk/*
+
 # hop up one level and apply patches before continuing
 cd $BASE_PATH
 PATCHES=`find $BASE_PATH/patches -name *.diff`
@@ -104,9 +106,6 @@ for ARCH in $ARCHS; do
 	cd $LIBS_DEST
 	LIBS=`find $BASE_PATH/$BRANCH/out/$BUILD_MODE -name '*.a'`
 	for LIB in $LIBS; do
-      echo "LIBS"
-      echo "$LIB"
-      
 	    LIB_TYPE=$(get_file_type "$LIB")
 	    if is_file_type_thin_archive "$LIB_TYPE"; then
 		copy_thin $AR $LIB `pwd`
@@ -129,7 +128,7 @@ echo "WEBRTC_REVISION=$REVISION" > build.properties
 
 cp -v $BASE_PATH/$BRANCH/out/$BUILD_MODE/*.jar $LIBS_DEST
 
-HEADERS=`find webrtc third_party talk -name *.h | grep -v android_tools`
+HEADERS=`find webrtc third_party -name *.h | grep -v android_tools`
 while read -r header; do
     mkdir -p $HEADERS_DEST/`dirname $header`
     cp $header $HEADERS_DEST/`dirname $header`

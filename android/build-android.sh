@@ -106,7 +106,9 @@ for ARCH in $ARCHS; do
   cd $LIBS_DEST
 	LIBS=`find $BASE_PATH/$BRANCH/out/$BUILD_MODE -name '*.a'`
 	for LIB in $LIBS; do
-      if [ LIB != "libjingle.a" ]; then
+      echo "NAME OF LIB: "
+      echo $LIB
+      if [ "$LIB" != "libjingle.a" ]; then
       (  
          LIB_TYPE=$(get_file_type "$LIB")
 	       if is_file_type_thin_archive "$LIB_TYPE"; then

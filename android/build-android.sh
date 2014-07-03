@@ -106,7 +106,8 @@ for ARCH in $ARCHS; do
 	
   if [ -z obj/talk ]; then
      rm -rf obj/talk/*
-     
+  fi
+
   cd $LIBS_DEST
 	LIBS=`find $BASE_PATH/$BRANCH/out/$BUILD_MODE -name '*.a'`
 	for LIB in $LIBS; do

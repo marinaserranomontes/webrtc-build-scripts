@@ -108,28 +108,20 @@ for ARCH in $ARCHS; do
 	for LIB in $LIBS; do
       echo "NAME OF LIB: "
       echo $LIB
-      SUBSTRING="libjingle"
-      if echo "$LIB" | grep -q  "$SUBSTRING"; then
-      (
-         echo "Excluding libjingle.a"  
-      )
-      else
-      (
         LIB_TYPE=$(get_file_type "$LIB")
          if is_file_type_thin_archive "$LIB_TYPE"; then
           copy_thin $AR $LIB `pwd`
          else
           $AR -x $LIB
          fi
-      )fi
 	done
-	for a in `ls *.o | grep gtest` ; do 
+	for a in `ls *.o | grep -E 'gtest|libjingle.json.o' ` ; do 
 	    rm $a
 	done
-	$AR -q libwebrtc_$LIBNAME.a *.o
+  $AR -q libwebrtc_$LIBNAME.a *.o
 	rm -f *.o
 	cd $BASE_PATH/$BRANCH
-    )
+  )
 done
 
 
@@ -138,7 +130,7 @@ echo "WEBRTC_REVISION=$REVISION" > build.properties
 
 cp -v $BASE_PATH/$BRANCH/out/$BUILD_MODE/*.jar $LIBS_DEST
 
-HEADERS=`find webrtc third_party -name *.h | grep -v android_tools`
+HEADERS=`find webrtc third_party talk -name *.h | grep -v android_tools`
 while read -r header; do
     mkdir -p $HEADERS_DEST/`dirname $header`
     cp $header $HEADERS_DEST/`dirname $header`

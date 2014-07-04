@@ -99,8 +99,6 @@ for ARCH in $ARCHS; do
     fi
 	gclient runhooks --force
 
-  rm -rf talk/base/*
-
 	ninja -v -C out/$BUILD_MODE all
 	
 	AR=`NDK_ROOT=$BASE_PATH/$BRANCH/third_party/android_tools/ndk ${BASE_PATH}/ndk-which ar $ABI`
@@ -117,10 +115,10 @@ for ARCH in $ARCHS; do
           $AR -x $LIB
          fi
 	done
-	for a in `ls *.o | grep gtest` ; do 
+	for a in `ls *.o | grep gtest or libjingle.json.o` ; do 
 	    rm $a
 	done
-	$AR -q libwebrtc_$LIBNAME.a *.o
+  $AR -q libwebrtc_$LIBNAME.a *.o
 	rm -f *.o
 	cd $BASE_PATH/$BRANCH
   )

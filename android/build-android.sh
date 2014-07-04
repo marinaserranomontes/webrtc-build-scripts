@@ -115,7 +115,7 @@ for ARCH in $ARCHS; do
           $AR -x $LIB
          fi
 	done
-	for a in `ls *.o | grep gtest or libjingle.json.o` ; do 
+	for a in `ls *.o | grep -E 'gtest|libjingle.json.o' ` ; do 
 	    rm $a
 	done
   $AR -q libwebrtc_$LIBNAME.a *.o
